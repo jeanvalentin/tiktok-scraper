@@ -1,0 +1,11 @@
+{
+  "type": "module",
+  "scripts": {
+    "clean": "rm -rf downloads",
+    "start": "node ."
+  },
+  "dependencies": {
+    "node-fetch": "^3.2.4",
+    "puppeteer": "^14.1.0"
+  }
+}
