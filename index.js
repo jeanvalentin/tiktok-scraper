@@ -18,18 +18,22 @@ for (const link of videoLinks) {
     console.log(link);
 }
 for (const link of videoLinks) {
-    const videoId = link.replace(/^.*\/(\d+)$/g, (u, v) => v);
-    // console.log(videoId);
-    const videoPage = await browser.newPage();
-    await videoPage.goto(link);
-    const videoUrl = await videoPage.$eval(`video`, e => e.getAttribute('src'));
-    // console.log(videoUrl);
-    await videoPage.close();
+    try {
+        const videoId = link.replace(/^.*\/(\d+)$/g, (u, v) => v);
+        // console.log(videoId);
+        const videoPage = await browser.newPage();
+        await videoPage.goto(link);
+        const videoUrl = await videoPage.$eval(`video`, e => e.getAttribute('src'));
+        // console.log(videoUrl);
+        await videoPage.close();
 
-    const videoFileName = `${account}_${videoId}.mp4`
-    console.log(`Downloading ${videoFileName}...`)
-    const videoBytes = await fetch(videoUrl).then(res => res.arrayBuffer()).then(arrayBuffer => Buffer.from(arrayBuffer));
-    writeFileSync(`${downloadsPath}/${videoFileName}`, videoBytes);
-    console.log(`Done.`)
+        const videoFileName = `${account}_${videoId}.mp4`
+        console.log(`Downloading ${videoFileName}...`)
+        const videoBytes = await fetch(videoUrl).then(res => res.arrayBuffer()).then(arrayBuffer => Buffer.from(arrayBuffer));
+        writeFileSync(`${downloadsPath}/${videoFileName}`, videoBytes);
+        console.log(`Done.`)
+    } catch {
+        console.log(`${link}: failure`);
+    }
 }
 await browser.close();
