@@ -15,6 +15,9 @@ const videoLinks = await page.$$eval(`a`, e => e.map(v => v.getAttribute('href')
 console.log(`${videoLinks.length} videos found.`)
 mkdirSync(downloadsPath, { recursive: true });
 for (const link of videoLinks) {
+    console.log(link);
+}
+for (const link of videoLinks) {
     const videoId = link.replace(/^.*\/(\d+)$/g, (u, v) => v);
     // console.log(videoId);
     const videoPage = await browser.newPage();
