@@ -23,15 +23,24 @@ for (const link of videoLinks) {
         // console.log(videoId);
         const videoPage = await browser.newPage();
         await videoPage.goto(link);
-        const videoUrl = await videoPage.$eval(`video`, e => e.getAttribute('src'));
         const videoFileName = `${account}_${videoId}.mp4`
         console.log(`Downloading ${videoFileName}...`)
-        const videoData = {};
-        videoData.username = account;
-        videoData.videoFileName = videoFileName;
-        videoData.pageUrl = link;
-        videoData.videoUrl = videoUrl;
-        console.log(videoData);
+        const videoUrl = await videoPage.$eval(`video`, e => e.getAttribute('src'));
+        const likeCount = await videoPage.$eval(`strong[data-e2e="like-count"]`, e => e.textContent);
+        const commentCount = await videoPage.$eval(`strong[data-e2e="comment-count"]`, e => e.textContent);
+        const shareCount = await videoPage.$eval(`strong[data-e2e="share-count"]`, e => e.textContent);
+        const videoDescription = await videoPage.$eval(`div[data-e2e="browse-video-desc"]`, e => e.textContent);
+        const videoData = {
+            username: account,
+            videoFileName: videoFileName,
+            pageUrl: link,
+            videoUrl: videoUrl,
+            likeCount: likeCount,
+            commentCount: commentCount,
+            shareCount: shareCount,
+            videoDescription: videoDescription,
+        };
+        // console.log(videoData);
         accountData.push(videoData);
         writeFileSync(`${downloadsPath}/${account}_data.json`, JSON.stringify(accountData));
         await videoPage.close();
