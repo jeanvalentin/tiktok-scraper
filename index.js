@@ -28,6 +28,7 @@ for (const link of videoLinks) {
         await videoPage.goto(link);
         console.log(videoData);
         accountData.push(videoData);
+        writeFileSync(`${downloadsPath}/${account}_data.json`, JSON.stringify(accountData));
         const videoUrl = await videoPage.$eval(`video`, e => e.getAttribute('src'));
         // console.log(videoUrl);
         await videoPage.close();
@@ -41,5 +42,4 @@ for (const link of videoLinks) {
         console.log(`${link}: failure`);
     }
 }
-writeFileSync(`${downloadsPath}/${account}_data.json`, JSON.stringify(accountData));
 await browser.close();
