@@ -12,6 +12,8 @@ This program uses Puppeteer. It seems to run out of the box on Windows, however 
 
 ## How to use
 
+Using this program violates TikTok's terms of service.
+
 `npm run start ${accountname}`
 
 Example: `npm run start edsheeran`
