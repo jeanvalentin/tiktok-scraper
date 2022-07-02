@@ -10,7 +10,7 @@ const accountData = [];
 const browser = await puppeteer.launch();
 const page = await browser.newPage();
 await page.goto(`https://www.tiktok.com/@${account}`);
-const videoLinks = await page.$$eval(`a`, e => e.map(v => v.getAttribute('href')).filter(v => /\/video\/\d+$/.test(v)));
+const videoLinks = await page.$$eval(`a`, e => e.map(v => v.getAttribute('href')).filter(v => /^https:\/\/www\.tiktok\.com\/@.+\/video\/\d+$/.test(v)));
 // videoLinks.splice(2);
 console.log(`${videoLinks.length} videos found.`)
 mkdirSync(downloadsPath, { recursive: true });
