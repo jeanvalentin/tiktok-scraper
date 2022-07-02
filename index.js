@@ -5,14 +5,13 @@ import puppeteer from 'puppeteer';
 
 const downloadsPath = 'downloads';
 const account = argv[2];
-const accountData = [];
 account ?? process.exit(console.log('Please supply an account name.'));
+const accountData = [];
 const browser = await puppeteer.launch();
 const page = await browser.newPage();
 await page.goto(`https://www.tiktok.com/@${account}`);
 const videoLinks = await page.$$eval(`a`, e => e.map(v => v.getAttribute('href')).filter(v => /\/video\/\d+$/.test(v)));
 // videoLinks.splice(2);
-// console.log(videoLinks);
 console.log(`${videoLinks.length} videos found.`)
 mkdirSync(downloadsPath, { recursive: true });
 for (const link of videoLinks) {
