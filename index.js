@@ -19,21 +19,22 @@ for (const link of videoLinks) {
 }
 for (const link of videoLinks) {
     try {
-        const videoData = {};
-        videoData.username = account;
         const videoId = link.replace(/^.*\/(\d+)$/g, (u, v) => v);
         // console.log(videoId);
         const videoPage = await browser.newPage();
         await videoPage.goto(link);
+        const videoUrl = await videoPage.$eval(`video`, e => e.getAttribute('src'));
+        const videoFileName = `${account}_${videoId}.mp4`
+        console.log(`Downloading ${videoFileName}...`)
+        const videoData = {};
+        videoData.username = account;
+        videoData.videoFileName = videoFileName;
+        videoData.pageUrl = link;
+        videoData.videoUrl = videoUrl;
         console.log(videoData);
         accountData.push(videoData);
         writeFileSync(`${downloadsPath}/${account}_data.json`, JSON.stringify(accountData));
-        const videoUrl = await videoPage.$eval(`video`, e => e.getAttribute('src'));
-        // console.log(videoUrl);
         await videoPage.close();
-
-        const videoFileName = `${account}_${videoId}.mp4`
-        console.log(`Downloading ${videoFileName}...`)
         const videoBytes = await fetch(videoUrl).then(res => res.arrayBuffer()).then(arrayBuffer => Buffer.from(arrayBuffer));
         writeFileSync(`${downloadsPath}/${videoFileName}`, videoBytes);
         console.log(`Done.`)
