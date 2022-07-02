@@ -2,8 +2,8 @@ import { mkdirSync, writeFileSync } from 'fs';
 import fetch from 'node-fetch';
 import { argv } from 'process';
 import puppeteer from 'puppeteer';
+import { DOWNLOADS_PATH } from './constants.js';
 
-const downloadsPath = 'downloads';
 const account = argv[2];
 account ?? process.exit(console.log('Please supply an account name.'));
 const accountData = [];
@@ -13,7 +13,7 @@ await page.goto(`https://www.tiktok.com/@${account}`);
 const videoLinks = await page.$$eval(`a`, e => e.map(v => v.getAttribute('href')).filter(v => /^https:\/\/www\.tiktok\.com\/@.+\/video\/\d+$/.test(v)));
 // videoLinks.splice(2);
 console.log(`${videoLinks.length} videos found.`)
-mkdirSync(downloadsPath, { recursive: true });
+mkdirSync(DOWNLOADS_PATH, { recursive: true });
 for (const link of videoLinks) {
     console.log(link);
 }
@@ -42,10 +42,10 @@ for (const link of videoLinks) {
         };
         // console.log(videoData);
         accountData.push(videoData);
-        writeFileSync(`${downloadsPath}/${account}_data.json`, JSON.stringify(accountData));
+        writeFileSync(`${DOWNLOADS_PATH}/${account}_data.json`, JSON.stringify(accountData));
         await videoPage.close();
         const videoBytes = await fetch(videoUrl).then(res => res.arrayBuffer()).then(arrayBuffer => Buffer.from(arrayBuffer));
-        writeFileSync(`${downloadsPath}/${videoFileName}`, videoBytes);
+        writeFileSync(`${DOWNLOADS_PATH}/${videoFileName}`, videoBytes);
         console.log(`Done.`)
     } catch {
         console.log(`${link}: failure`);
