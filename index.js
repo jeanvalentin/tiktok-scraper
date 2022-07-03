@@ -30,6 +30,7 @@ for (const link of videoLinks) {
         const commentCount = await videoPage.$eval(`strong[data-e2e="comment-count"]`, e => e.textContent);
         const shareCount = await videoPage.$eval(`strong[data-e2e="share-count"]`, e => e.textContent);
         const videoDescription = await videoPage.$eval(`div[data-e2e="browse-video-desc"]`, e => e.textContent);
+        const publicationDate = await videoPage.$eval(`span[data-e2e="browser-nickname"] span:nth-child(2)`, e => e.textContent);
         const videoData = {
             username: account,
             videoFileName: videoFileName,
@@ -39,6 +40,7 @@ for (const link of videoLinks) {
             commentCount: commentCount,
             shareCount: shareCount,
             videoDescription: videoDescription,
+            publicationDate: publicationDate,
         };
         // console.log(videoData);
         accountData.push(videoData);
