@@ -20,6 +20,19 @@ Example: `npm run start edsheeran`
 
 Videos and metadata are saved to `./downloads`, directory is created if need be. Videos are in mp4 format. Metadata is in json.
 
+## Metadata
+
+For each video, the following information is fetched and saved:
+- username
+- videoFileName
+- pageUrl
+- videoUrl
+- likeCount
+- commentCount
+- shareCount
+- videoDescription
+- publicationDate
+
 ## Convert output data
 
 Yeah sure you don't like json, you want Excel files. Fine.
